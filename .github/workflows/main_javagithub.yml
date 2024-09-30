@@ -29,7 +29,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.war'
+          #path: '${{ github.workspace }}/target/*.war'
+          path: '$/build/libs/azure-0.0.1-SNAPSHOT.war'
 
   deploy:
     runs-on: ubuntu-latest
@@ -52,6 +53,9 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C7FA68121AF140B39ED7897B5B4F5415 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_C16B13E914EB484DB4850433A47869A4 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B1231C1CB7054E91980AD0215A993127 }}
+      
+      - name: Rename war to ROOT
+        run: mv azure-0.0.1-SNAPSHOT.war ROOT.war
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -59,5 +63,14 @@ jobs:
         with:
           app-name: 'JAVAGitHub'
           slot-name: 'Production'
-          package: '*.war'
+          package: 'ROOT.war'
+
+          
+      #- name: Deploy to Azure Web App
+       # id: deploy-to-webapp
+        #uses: azure/webapps-deploy@v2
+        #with:
+         # app-name: 'JAVAGitHub'
+          #slot-name: 'Production'
+          #package: '*.war'
           
